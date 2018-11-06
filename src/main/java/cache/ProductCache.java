@@ -27,7 +27,8 @@ public class ProductCache {
     // If the list is empty we also check for new products
     if (forceUpdate
         || ((this.created + this.ttl) >= (System.currentTimeMillis() / 1000L))
-        || this.products == null) { //"null" erstatter emtpy
+        || this.products == null) { //"null" erstatter empty
+
 
       // Get products from controller, since we wish to update.
       ArrayList<Product> products = ProductController.getProducts();
