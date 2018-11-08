@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.User;
+import utils.Hashing;
 import utils.Log;
 
 public class UserController {
@@ -115,6 +116,7 @@ public class UserController {
             + user.getLastname()
             + "', '"
             + user.getPassword()
+            + Hashing.hashWithSalt(user.getPassword())
             + "', '"
             + user.getEmail()
             + "', "
