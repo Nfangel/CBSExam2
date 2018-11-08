@@ -1,7 +1,8 @@
 package cache;
 
-import controllers.ProductController;
-import model.Product;
+import controllers.OrderController;
+import model.Order;
+import model.Order;
 import utils.Config;
 
 import java.util.ArrayList;
@@ -9,8 +10,8 @@ import java.util.ArrayList;
 //TODO: Build this cache and use it.
 public class OrderCache {
 
-    // List of products
-    private ArrayList<Product> products;
+    // List of orders
+    private ArrayList<Order> orders;
 
     // Time cache should live
     private long ttl;
@@ -19,28 +20,28 @@ public class OrderCache {
     private long created;
 
     public OrderCache() {
-        this.ttl = Config.getProductTtl();
+        this.ttl = Config.getOrderTtl();
     }
 
-    public ArrayList<Product> getProducts(Boolean forceUpdate) {
+    public ArrayList<Order> getOrders(Boolean forceUpdate) {
 
         // If we wish to clear cache, we can set force update.
         // Otherwise we look at the age of the cache and figure out if we should update.
-        // If the list is empty we also check for new products
+        // If the list is empty we also check for new orders
         if (forceUpdate
-                || ((this.created + this.ttl) >= (System.currentTimeMillis() / 1000L))
-                || this.products == null) { //"null" erstatter empty
+                || ((this.created + this.ttl) <= (System.currentTimeMillis() / 1000L))
+                || this.orders == null) { //"null" erstatter empty
 
 
-            // Get products from controller, since we wish to update.
-            ArrayList<Product> products = ProductController.getProducts();
+            // Get orderss from controller, since we wish to update.
+            ArrayList<Order> orders = OrderController.getOrders();
 
-            // Set products for the instance and set created timestamp
-            this.products = products;
+            // Set orderss for the instance and set created timestamp
+            this.orders = orders;
             this.created = System.currentTimeMillis() / 1000L;
         }
 
         // Return the documents
-        return this.products;
+        return this.orders;
     }
 }

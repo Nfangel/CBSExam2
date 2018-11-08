@@ -40,10 +40,7 @@ public class ProductEndpoints {
   @Path("/")
   public Response getProducts() {
 
-    //Instantiate the productcache (oliver)
-    ProductCache productCache = new ProductCache();
-
-    // Call our controller-layer in order to get the order from the DB
+        // Call our controller-layer in order to get the order from the DB
 
     //Nedenstående kode er blevet kommenteret ud
     //ArrayList<Product> products = ProductController.getProducts();
@@ -81,4 +78,5 @@ public class ProductEndpoints {
       return Response.status(400).entity("Could not create user").build();
     }
   }
+  static ProductCache productCache = new ProductCache();
 }
