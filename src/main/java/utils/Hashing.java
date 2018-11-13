@@ -10,7 +10,7 @@ public final class Hashing {
 
     public String salt = "bevjebve";
 
-    // TODO: You should add a salt and make this secure
+    // TODO: You should add a salt and make this secure (FIXED)
     public static String md5(String rawString) {
         try {
 
@@ -40,8 +40,8 @@ public final class Hashing {
         return null;
     }
 
-    // TODO: You should add a salt and make this secure
-    public static String sha(String rawString) {
+    // TODO: You should add a salt and make this secure (NOT IN USE)
+    public static String sha (String rawString) {
         try {
             // We load the hashing algoritm we wish to use.
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -61,9 +61,9 @@ public final class Hashing {
 
         return rawString;
     }
-
     public String hashWithSalt(String str) {
         String salt = str + this.salt;
         return md5(salt);
     }
+
 }
