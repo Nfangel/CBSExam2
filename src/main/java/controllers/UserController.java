@@ -3,6 +3,10 @@ package controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
 import model.User;
 import utils.Hashing;
 import utils.Log;
@@ -134,5 +138,53 @@ public class UserController {
 
     // Return user
     return user;
+  }
+  public static String loginUser (User user) {
+
+    // Check for DB Connection
+    if (dbCon == null) {
+      dbCon = new DatabaseController();
+    }
+    String sql = "SELECT * FROM user where email = '" + user.getEmail() + "'AND password = '" + user.getPassword() + "'";
+
+    dbCon.insert(sql);
+
+    // DO the query
+    ResultSet resultSet = dbCon.query(sql);
+    User userlogin;
+    String token = null;
+
+    try {
+      //Get the first object, we only have one
+      if(resultSet.next()) {
+        userlogin =
+                new User(
+                        resultSet.getInt("id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("password"),
+                        resultSet.getString("email"));
+
+        if (userlogin != null) {
+          try {
+            Algorithm algorithm = Algorithm.HMAC256("secret");
+            token = JWT.create()
+                    .withClaim("userid", userlogin.getId())
+                    .withIssuer("auth0")
+                    .sign(algorithm);
+          } catch (JWTCreationException exception) {
+            System.out.println(exception.getMessage());
+          } finally {
+            return token;
+          }
+        }
+      } else {
+  System.out.println("No user found, Boi");
+        }
+      } catch (SQLException ex) {
+      System.out.println(ex.getMessage());
+    }
+
+    return "";
   }
 }

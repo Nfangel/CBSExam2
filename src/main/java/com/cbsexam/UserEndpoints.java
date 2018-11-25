@@ -53,7 +53,8 @@ public class UserEndpoints {
     // TODO: Add Encryption to JSON (FIXED)
     // Transfer users to json in order to return it to the user
     String json = new Gson().toJson(users);
-    json = Encryption.encryptDecryptXOR(json);
+    //json = Encryption.encryptDecryptXOR(json);
+    //json = new Gson().toJson(json);
 
     // Return the users with the status code 200
     return Response.status(200).type(MediaType.APPLICATION_JSON).entity(json).build();
@@ -82,14 +83,24 @@ public class UserEndpoints {
     }
   }
 
-  // TODO: Make the system able to login users and assign them a token to use throughout the system.
+  // TODO: Make the system able to login users and assign them a token to use throughout the system. (FIXED)
   @POST
   @Path("/login")
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response loginUser(String x) {
+  public Response loginUser(String body) {
 
-    // Return a response with status 200 and JSON as type
-    return Response.status(400).entity("Endpoint not implemented yet").build();
+    // Read the Json from body and transfer it to a user class)
+    User user = new Gson().fromJson(body, User.class);
+
+    // Get the user back with the added ID and return it to the user
+    String token = UserController.loginUser(user);
+
+    if (token != "") {
+      // Return a response with status 200 and JSON as type
+      return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(token).build();
+    } else {
+      return Response.status(400).entity("Endpoint not implemented yet").build();
+    }
   }
 
   // TODO: Make the system able to delete users
