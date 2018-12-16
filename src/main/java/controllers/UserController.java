@@ -5,8 +5,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import model.User;
 import utils.Hashing;
 import utils.Log;
@@ -187,4 +190,53 @@ public class UserController {
 
     return "";
   }
+    // comment this method!!!
+  public static boolean deleteUser (String token){
+      if (dbCon==null){
+          dbCon=new DatabaseController();
+      }
+      DecodedJWT jwt = null;
+
+      try {
+          Algorithm algorithm = Algorithm.HMAC256("secret");
+          JWTVerifier verifier = JWT.require(algorithm)
+                  .withIssuer("auth0")
+                  .build();
+          jwt = verifier.verify(token);
+      } catch (JWTVerificationException exception) {
+      }
+
+      String sql = "DELETE FROM user WHERE id = " +jwt.getClaim("userid").asInt();
+
+      return dbCon.insert(sql) ==1;
+  }
+
+    // comment this method!!!
+    public static boolean updateUser (User user, String token){
+
+      Hashing hashing = new Hashing();
+
+        if (dbCon==null){
+            dbCon=new DatabaseController();
+        }
+        DecodedJWT jwt = null;
+
+        try {
+            Algorithm algorithm = Algorithm.HMAC256("secret");
+            JWTVerifier verifier = JWT.require(algorithm)
+                    .withIssuer("auth0")
+                    .build();
+            jwt = verifier.verify(token);
+        } catch (JWTVerificationException exception) {
+        }
+
+        String sql = "UPDATE user SET first_name = '" + user.getFirstname() + "', last_name ='"
+                + "', password = '" + hashing.hashWithSalt(user.getPassword()) + "', email ='" + user.getEmail()
+                + "' WHERE id = " + jwt.getClaim("userid").asInt();
+
+        return dbCon.insert(sql) ==1;
+    }
+
+
+  //auth user metode
 }
