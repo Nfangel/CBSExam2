@@ -237,6 +237,24 @@ public class UserController {
         return dbCon.insert(sql) ==1;
     }
 
+    }
 
-  //auth user metode
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

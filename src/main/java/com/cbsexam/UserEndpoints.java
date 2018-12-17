@@ -79,7 +79,7 @@ public class UserEndpoints {
     }
   }
 
-  // TODO: Make the system able to login users and assign them a token to use throughout the system.
+  // TODO: Make the system able to login users and assign them a token to use throughout the system. (FIXED)
   @POST
   @Path("/login")
   @Consumes(MediaType.APPLICATION_JSON)
@@ -88,8 +88,6 @@ public class UserEndpoints {
     // Read the Json from body and transfer it to a user class)
     User user = new Gson().fromJson(body, User.class);
 
-    //!!!insert auth user metode!!!
-      //user.getEmail() && user.getPassword();
 
     // Get the user back with the added ID and return it to the user
     String token = UserController.loginUser(user);
