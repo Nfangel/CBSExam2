@@ -42,8 +42,7 @@ public class ProductEndpoints {
   @Path("/")
   public Response getProducts() {
 
-        // Call our controller-layer in order to get the order from the DB
-
+    // Call our controller-layer in order to get the order from the DB
     //Nedenstående kode er blevet kommenteret ud
     //ArrayList<Product> products = ProductController.getProducts();
     //erstattes af nedenstående kode
